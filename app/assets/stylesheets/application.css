@@ -1,0 +1,16 @@
+/*
+ *= require_tree .
+ *= require_self
+ */
+
+ table {
+  border-collapse: collapse;
+  border: solid 1px;
+  width: 100%;
+ }
+ 
+ td {
+   border: solid 1px;
+   padding: 5px;
+   background: #eee;
+ }

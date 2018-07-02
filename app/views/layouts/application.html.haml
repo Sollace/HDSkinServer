@@ -1,0 +1,14 @@
+!!! XHTML 5
+!!!
+%html
+	%head
+		%meta(http-equiv="Content-type" content="text/html; charset=utf-8")
+		%meta(name="theme-color" content="#121212")
+		%meta(name="viewport" content="width=device-width, initial-scale=1")
+		%link(rel="icon" sizes="160x160" href="/favicon.png")
+		%link(rel="icon" href="/favicon.ico")
+		%title HDSkins
+		= csrf_meta_tags
+		= stylesheet_link_tag "application"
+		= javascript_include_tag "application"
+	%body= yield

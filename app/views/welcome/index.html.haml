@@ -1,0 +1,40 @@
+%h1
+	Welcome!
+
+%p
+	This is a sample blurb to describe what this server is about. Find out more about HDSkins by following Mine Little Pony on Github.com
+
+%br
+%b Profiles
+%table
+	%tr
+		%td Uuid
+		%td Username
+		%td Created At
+		%td Updated At
+	- Profile.order(:updated_at).reverse_order.limit(10).each do|profile|
+		%tr
+			%td= profile.uuid
+			%td= profile.username
+			%td= profile.created_at
+			%td= profile.updated_at
+
+%br
+%b Textures
+%table
+	%tr
+		%td Type
+		%td Model
+		%td Url
+		%td Created At
+		%td Updated At
+		%td User
+	- Texture.order(:updated_at).reverse_order.limit(10).each do|texture|
+		%tr
+			%td= texture.type
+			%td= texture.model
+			%td
+				%a{href: texture.url}= texture.url
+			%td= texture.created_at
+			%td= texture.updated_at
+			%td= texture.profile.username

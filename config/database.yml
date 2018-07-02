@@ -1,0 +1,31 @@
+default: &default
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: 10
+  timeout: 5000
+  username: root
+  password: seCur17y
+  host: 127.0.0.1
+  port: 3306
+# socket: /var/run/mysqld.sock
+  reconnect: true
+
+development:
+  <<: *default
+  database: hdskins/development
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
+test:
+  <<: *default
+  database: hdskins/test
+
+production:
+  adapter: mysql2
+  encoding: utf8mb4
+  pool: 10
+  timeout: 5000
+  username: hdskins
+  password: <%= File.read("/home/hdskins/.mysqlpwd") rescue nil %>
+  database: hdskins
