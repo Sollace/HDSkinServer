@@ -1,16 +1,13 @@
+#
+# Controller to handle legacy skin server requests.
+# We can't trust the client to follow redirects so were look up and
+# serve the correct files ourselves.
+#
 class LegacyController < ApplicationController
   
   def show
     
-    if params[:type]
-      @path = Rails.root.join('public', params[:type].pluralize, "#{params[:uuid]}.png")
-      
-      if File.exist?(@path)
-        return serve_direct(@path, 'image/png')
-      end
-      
-      params[:type] = params[:type].singularize
-    end
+    params[:type] = params[:type].singularize
     
     if !(@profile = Profile.lookup(params))
       not_found

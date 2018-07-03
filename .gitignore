@@ -1,13 +1,13 @@
 # Ignore sample data
 
-/public/capes
-!/public/capes/.keep
+/public/store/capes
+!/public/store/capes/.keep
 
-/public/elytras
-!/public/elytras/.keep
+/public/store/elytras
+!/public/store/elytras/.keep
 
-/public/skins
-!/public/skins/.keep
+/public/store/skins
+!/public/store/skins/.keep
 
 # Ignore bundler config.
 /.bundle

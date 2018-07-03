@@ -23,6 +23,14 @@ class Texture < ApplicationRecord
   MODELS = %W[slim default].freeze
   TYPES = %W[skin elytra cape].freeze
   
+  def self.models
+    MODELS
+  end
+  
+  def self.types
+    TYPES
+  end
+  
   def self.check_model(model)
     MODELS.include?(model)
   end
@@ -39,11 +47,11 @@ class Texture < ApplicationRecord
   end
   
   def url
-    "#{root_path}#{type}/#{checksum}.png"
+    "#{root_path}/store/#{type}/#{checksum}.png"
   end
   
   def asset_path
-    return Rails.root.join('public', type.pluralize, "#{self.checksum}.png")
+    return Rails.root.join('public', 'store', type.pluralize, "#{self.checksum}.png")
   end
   
   def update_assets(uploaded_io)
