@@ -1,7 +1,8 @@
 class ProfilesController < ApplicationController
+  skip_before_action :verify_authenticity_token, :only => [:gateway]
   
   def show
-    if params[:uuid] && (@profile = Profile.where(uuid: params[:uuid])).first
+    if @profile = Profile.lookup(params)
       return render json: {
         success: true,
         data: @profile.json
@@ -14,24 +15,34 @@ class ProfilesController < ApplicationController
   end
   
   def gateway
-    @type = params[:type].to_sym
+    @type = params[:type]
     
     if params[:clear]
       destroy
     else
-      upload
+      create
     end
   end
   
   def create
     if !params[:uuid]
-      return head :access_denied
+      return head :unauthorized
     end
     
     @model = params[:model]
     
     if !Texture.check_model(@model)
-      return head :access_denied
+      return head :unauthorized
+    end
+    
+    if !Texture.check_type(@type)
+      return head :unauthorized
+    end
+    
+    @file = params[@type]
+    
+    if !@file.content_type
+      return render plain: "Unverifiable content type"
     end
     
     @profile = Profile.where(uuid: params[:uuid]).first
@@ -46,31 +57,29 @@ class ProfilesController < ApplicationController
       @profile.save
     end
     
-    @texture = @profile.textures.where(type: @type)
-    @skinFile = params[params[:type]]
+    @texture = @profile.textures.where(type: @type).first
     
     if @texture
-      @texture.model = params[:model]
+      @texture.model = @model
     else
-      @texture = Texture.create({
-        profile: @profile,
+      @texture = @profile.textures.create({
         type: @type,
         model: params[:model]
       })
     end
     
-    @texture.update_assets(@skinFile)
+    @texture.update_assets(@file)
     @texture.save
     
-    head :ok
+    render plain: "ok"
   end
   
   def destroy
-    if !params[:uuid] && !(@profile = Profile.where(uuid: params[:uuid]).first)
+    if !(@profile = Profile.lookup(params))
       return head :not_found
     end
     
-    @texture = @profile.textures.where(type: @type)
+    @texture = @profile.textures.where(type: @type).first
     
     if @profile.textures.count == 1
       @profile.destroy
@@ -78,7 +87,7 @@ class ProfilesController < ApplicationController
       @texture.destroy
     end
     
-    head :ok
+    render plain: "ok"
   end
   
 end

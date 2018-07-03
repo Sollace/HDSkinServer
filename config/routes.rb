@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   resource :profile, only: [:show]
   
   # Skins can be uploaded via either post of put
-  scope controller: :skins, action: :gateway do
+  scope controller: :profiles, action: :gateway do
     post '/'
     put '/'
   end

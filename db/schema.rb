@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(version: 20180702202004) do
 
   create_table "textures", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.integer "profile_id"
-    t.string "hash"
+    t.string "checksum"
     t.string "type"
     t.string "model"
     t.datetime "created_at", null: false

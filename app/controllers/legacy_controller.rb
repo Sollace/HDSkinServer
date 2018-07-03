@@ -1,9 +1,20 @@
 class LegacyController < ApplicationController
   
   def show
-    if !(params[:uuid] && (@profile = Profile.where(uuid: params[:uuid])).first)
+    
+    if params[:type]
+      @path = Rails.root.join('public', params[:type].pluralize, "#{params[:uuid]}.png")
+      
+      if File.exist?(@path)
+        return serve_direct(@path, 'image/png')
+      end
+    end
+    
+    if !(@profile = Profile.lookup(params))
       not_found
     end
+    
+    puts params[:type]
     
     if !(@texture = @profile.textures.where(type: params[:type]).first)
       not_found

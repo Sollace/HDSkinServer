@@ -5,6 +5,8 @@ class Texture < ApplicationRecord
   include WithFiles
   include Rails.application.routes.url_helpers
   
+  self.inheritance_column = :inheritance_type
+  
   before_destroy :remove_assets
   
   belongs_to :profile, dependent: :destroy
@@ -18,10 +20,15 @@ class Texture < ApplicationRecord
   #
   # We only support these three types of skins for now.
   #
-  MODELS = %W[skin elytra cape].freeze
+  MODELS = %W[slim default].freeze
+  TYPES = %W[skin elytra cape].freeze
   
   def self.check_model(model)
     MODELS.include?(model)
+  end
+  
+  def self.check_type(model)
+    TYPES.include?(model)
   end
   
   def json
@@ -32,11 +39,11 @@ class Texture < ApplicationRecord
   end
   
   def url
-    "#{root_path}/#{model}/#{hash}.png"
+    "#{root_path}#{type}/#{checksum}.png"
   end
   
   def asset_path
-    Rails.root.join('public', model, "#{hash}.png")
+    return Rails.root.join('public', type.pluralize, "#{self.checksum}.png")
   end
   
   def update_assets(uploaded_io)
@@ -46,9 +53,14 @@ class Texture < ApplicationRecord
     
     remove_assets
     
-    hash = calculate_checksum(uploaded_io.read)
+    data = uploaded_io.read
     
-    save_file(asset_path, uploaded_io, 'image/png')
+    self.checksum = calculate_checksum(data)
+    
+    File.open(asset_path, 'wb') do |file|
+      file.write(data)
+      file.flush
+    end
     
     self
   end

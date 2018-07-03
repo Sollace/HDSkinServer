@@ -7,6 +7,16 @@ class Profile < ApplicationRecord
   # accessor :uuid
   # accessor :username
   
+  def self.lookup(params)
+    return nil if !params[:uuid]
+    
+    if params[:uuid] == params[:user]
+      return Profile.where(username: params[:user]).first
+    end
+    
+    return Profile.where(uuid: params[:uuid]).first
+  end
+  
   def json
     response = {
       uuid: uuid,
