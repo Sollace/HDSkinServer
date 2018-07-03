@@ -8,13 +8,13 @@ class LegacyController < ApplicationController
       if File.exist?(@path)
         return serve_direct(@path, 'image/png')
       end
+      
+      params[:type] = params[:type].singularize
     end
     
     if !(@profile = Profile.lookup(params))
       not_found
     end
-    
-    puts params[:type]
     
     if !(@texture = @profile.textures.where(type: params[:type]).first)
       not_found

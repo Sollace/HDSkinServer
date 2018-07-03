@@ -2,7 +2,7 @@
 # Player Profiles
 #
 class Profile < ApplicationRecord
-  has_many :textures
+  has_many :textures, dependent: :destroy
   
   # accessor :uuid
   # accessor :username

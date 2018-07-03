@@ -9,7 +9,7 @@ class Texture < ApplicationRecord
   
   before_destroy :remove_assets
   
-  belongs_to :profile, dependent: :destroy
+  belongs_to :profile
   
   # accessor :hash
   # accessor :type

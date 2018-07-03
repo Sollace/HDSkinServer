@@ -76,7 +76,7 @@ class ProfilesController < ApplicationController
   
   def destroy
     if !(@profile = Profile.lookup(params))
-      return head :not_found
+      return render plain: "ok"
     end
     
     @texture = @profile.textures.where(type: @type).first
