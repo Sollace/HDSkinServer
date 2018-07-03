@@ -45,7 +45,7 @@ class ProfilesController < ApplicationController
       return render plain: "Unverifiable content type"
     end
     
-    @profile = Profile.where(uuid: params[:uuid]).first
+    @profile = Profile.lookup(params)
     
     if !@profile
       @profile = Profile.create({
@@ -57,16 +57,19 @@ class ProfilesController < ApplicationController
       @profile.save
     end
     
-    @texture = @profile.textures.where(type: @type).first
+    @texture = @profile.textures.active.where(type: @type).first
+    @profile.textures.where(hidden: true).where('updated_at < ?', Time.zone.now - 30.days).destroy_all
     
     if @texture
-      @texture.model = @model
-    else
-      @texture = @profile.textures.create({
-        type: @type,
-        model: params[:model]
-      })
+      @texture.hidden = true
+      @texture.save
     end
+    
+    @texture = @profile.textures.create({
+      type: @type,
+      model: params[:model],
+      hidden: false
+    })
     
     @texture.update_assets(@file)
     @texture.save
@@ -79,7 +82,7 @@ class ProfilesController < ApplicationController
       return render plain: "ok"
     end
     
-    @texture = @profile.textures.where(type: @type).first
+    @texture = @profile.textures.where(type: @type)
     
     if @profile.textures.count == 1
       @profile.destroy

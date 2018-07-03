@@ -1,0 +1,58 @@
+%h1
+	Profiles
+
+%p
+	Every user that uploads their skin has a profile! Profiles are used to keep track of what textures a minecraft account owns as well as other neat little things.
+%p
+	Textures uploaded here are kept into a backlog up to 30 days, meaning if anyone accidentally replaces their skin and needs a way back, they can come here and search for it by their username.
+%p
+	Active textures are listed first.
+
+%div
+	%a{href: root_path} Back to home
+	
+%br
+- if @profile
+	%table
+		%tr
+			%td(colspan="2") Username
+			%td= @profile.username
+		%tr
+			%td UUI
+			%td= @profile.uuid
+	
+	%h2 Past Textures
+	%table
+		%tr
+			%td(colspan="5")
+				This user has
+				= @profile.textures.active.count
+				of
+				= @profile.textures.count
+				active textures
+		%tr
+			%td Type
+			%td Model
+			%td Url
+			%td Created At
+			%td Updated At
+		- @profile.textures.order(:updated_at, :created_at).reverse_order.each do|texture|
+			%tr{ class: texture.hidden ? "" : "active"}
+				%td= texture.type
+				%td= texture.model
+				%td
+					%a{href: texture.url}= texture.url
+				%td= texture.created_at
+				%td= texture.updated_at
+- else
+	404
+	
+= form_for(Profile.new, url: texture_index_path, method: :get) do |r|
+	%table
+		%tr
+			%td(colspan="2") Profile Search
+		%tr
+			%td Username:
+			%td= r.text_field :username
+		%tr
+			%td(colspan="2")= r.submit("submit")

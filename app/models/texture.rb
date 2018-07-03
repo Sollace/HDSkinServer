@@ -11,6 +11,8 @@ class Texture < ApplicationRecord
   
   belongs_to :profile
   
+  scope :active, -> {where(hidden: false)}
+  
   # accessor :hash
   # accessor :type
   # accessor :model
@@ -47,7 +49,7 @@ class Texture < ApplicationRecord
   end
   
   def url
-    "#{root_path}/store/#{type}/#{checksum}.png"
+    "#{root_path}store/#{type.pluralize}/#{checksum}.png"
   end
   
   def asset_path
@@ -75,6 +77,8 @@ class Texture < ApplicationRecord
   
   protected
   def remove_assets
-    del_file(asset_path)
+    if Texture.where("checksum = ? AND id != ?", checksum, id).count == 0
+      del_file(asset_path)
+    end
   end
 end

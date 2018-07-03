@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180702202004) do
+ActiveRecord::Schema.define(version: 20180703160808) do
 
   create_table "profiles", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4" do |t|
     t.string "username"
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20180702202004) do
     t.string "model"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "hidden", default: false
   end
 
 end

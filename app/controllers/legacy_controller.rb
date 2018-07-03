@@ -13,7 +13,7 @@ class LegacyController < ApplicationController
       not_found
     end
     
-    if !(@texture = @profile.textures.where(type: params[:type]).first)
+    if !(@texture = @profile.textures.active.where(type: params[:type]).first)
       not_found
     end
       

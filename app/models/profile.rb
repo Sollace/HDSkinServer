@@ -23,7 +23,7 @@ class Profile < ApplicationRecord
       textures: {}
     }
     
-    textures.each do |tex|
+    textures.active.each do |tex|
       response[:textures][tex.model.to_sym] = tex.json
     end
     
