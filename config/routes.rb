@@ -18,5 +18,7 @@ Rails.application.routes.draw do
     put '/'
   end
   
+  get 'about' => 'welcome#about'
+  
   root 'welcome#index'
 end

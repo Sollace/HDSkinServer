@@ -1,0 +1,55 @@
+%h1
+	Minecraft HD Skin Server version 1.1
+
+%p
+	Legacy requests are handle by the legacy_controller and generally have the following format:
+%code
+	http://<url>/<type>/<player_uuid>.png
+%p
+	This allows for only the most basic functionality, however. As soon as a player uploads a new skin the original is lost.
+	The url also remains unchange, resulting in caching issues under some network condictions, so players may have to wait
+	minutes of even hours for their new skin to appear.
+	
+%p
+	Valhalla requests are handled  bit differently. Instead of lazy pulling each skin type, the server exposes one endpoint to 
+	get all of the relevent information at once:
+	
+%code
+	http://<url>/profile/<player_uuid>.json
+	
+%p
+	Responses to this request include a success flag set to true alongside the relevant data. The server returns back the player's uuid and a textures object with all the skin resources associated with that profile, their model type, and a url where they can be found.
+	
+%code
+	:plain
+		{
+			success: true,
+			data: {
+				uuid: "1213-c33-2c3c-2c-23225",
+				textures: {
+					skin: {
+						model: "default",
+						url: "http://url/to/image.png"
+					}
+				}
+			}
+		}
+
+%h2 Data Type
+
+There are only two data types you have to keep in mind: Models, and Texture_Types.
+
+Models describe the type of player model used with the texture.
+
+Vanilla Minecraft only supports two models:
+%ol
+	%li default (Steve)
+	%li slim (Alex)
+
+The server will by default only accept these two values, however modders may desire more capabilities, thus this server can be configured to support any additional types by editing the respective array in the Texture.rb model.
+
+Texture_Types are a simillar case. The currently allowed values are:
+
+%ol
+	- Texture.types.each do |model|
+		%li=model
