@@ -15,44 +15,52 @@
 - if @profile
 	%table
 		%tr
-			%td(colspan="2") Username
-			%td= @profile.username
+			%td(colspan="2")
+				Username:
+				= @profile.username
 		%tr
-			%td UUI
-			%td= @profile.uuid
-	
-	%h2 Past Textures
-	%table
+			%td 
+				UUID:
+				= @profile.uuid
 		%tr
 			%td(colspan="5")
 				This user has
 				= @profile.textures.active.count
-				of
+				out of
 				= @profile.textures.count
-				active textures
-		%tr
-			%td Type
-			%td Model
-			%td Url
-			%td Created At
-			%td Updated At
-		- @profile.textures.order(:updated_at, :created_at).reverse_order.each do|texture|
-			%tr{ class: texture.hidden ? "" : "active"}
-				%td= texture.type
-				%td= texture.model
-				%td
-					%a{href: texture.url}= texture.url
-				%td= texture.created_at
-				%td= texture.updated_at
+				textures currently active.
+	%h2 Active Textures
+	%ul.texture-grid
+		- @profile.textures.active.order(:updated_at, :created_at).reverse_order.each do|texture|
+			%li
+				%img.sharp{src: texture.url}
+				.info
+					%b
+						= texture.model
+						= texture.type
+	%h2 Past Textures
+	%ul.texture-grid
+		- @profile.textures.inactive.order(:updated_at, :created_at).reverse_order.each do|texture|
+			%li
+				%img.sharp{src: texture.url}
+				.info
+					%b
+						= texture.model
+						= texture.type
+					%br
+					%br
+					= form_tag(texture_path(texture), method: :patch) do |f|
+						= hidden_field_tag :hidden, 0
+						= submit_tag("Use this texture")
 - else
 	404
 	
-= form_for(Profile.new, url: texture_index_path, method: :get) do |r|
+= form_tag(texture_index_path, method: :get) do |f|
 	%table
 		%tr
 			%td(colspan="2") Profile Search
 		%tr
 			%td Username:
-			%td= r.text_field :username
+			%td= text_field_tag :username
 		%tr
-			%td(colspan="2")= r.submit("submit")
+			%td(colspan="2")= submit_tag("Search")

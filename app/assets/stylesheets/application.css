@@ -1,20 +1,4 @@
 /*
- *= require_tree .
- *= require_self
+ *= require ./tables.css
+ *= require ./lists.css
  */
-
-table {
-  border-collapse: collapse;
-  border: solid 1px;
-  width: 100%;
-}
- 
-td {
-  border: solid 1px;
-  padding: 5px;
-  background: #eee;
-}
- 
-tr.active td {
-  background: #efe;
-}

@@ -12,6 +12,7 @@ class Texture < ApplicationRecord
   belongs_to :profile
   
   scope :active, -> {where(hidden: false)}
+  scope :inactive, -> {where(hidden: true)}
   
   # accessor :hash
   # accessor :type
@@ -43,8 +44,10 @@ class Texture < ApplicationRecord
   
   def json
     {
-      model: model,
-      url: url
+      url: url,
+      metadata: {
+        model: model
+      }
     }
   end
   

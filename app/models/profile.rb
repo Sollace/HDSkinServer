@@ -19,12 +19,15 @@ class Profile < ApplicationRecord
   
   def json
     response = {
-      uuid: uuid,
+      timestamp: Time.zone.now.to_i,
+      profileId: uuid,
+      profileName: username,
+      isPublic: true,
       textures: {}
     }
     
     textures.active.each do |tex|
-      response[:textures][tex.model.to_sym] = tex.json
+      response[:textures][tex.type.to_sym] << tex.json
     end
     
     response

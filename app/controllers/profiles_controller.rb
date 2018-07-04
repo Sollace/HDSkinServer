@@ -87,7 +87,7 @@ class ProfilesController < ApplicationController
     if @profile.textures.count == 1
       @profile.destroy
     elsif @texture
-      @texture.destroy
+      @texture.destroy_all
     end
     
     render plain: "ok"
