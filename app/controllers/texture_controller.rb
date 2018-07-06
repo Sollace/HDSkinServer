@@ -1,12 +1,11 @@
 class TextureController < ApplicationController
-  skip_before_action :verify_authenticity_token, :only => [:gateway]
+  skip_before_action :verify_authenticity_token, only: [:gateway]
+  before_action :authenticate_user!, only: [:update]
   
   def index
     if params[:username]
       @profile = Profile.where(username: params[:username]).first
     end
-    
-    
     
     if params[:format] == 'json'
       if @profile

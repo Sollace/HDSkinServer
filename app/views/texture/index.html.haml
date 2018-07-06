@@ -8,12 +8,17 @@
 %p
 	Active textures are listed first.
 
-%div
-	%a{href: root_path} Back to home
-	
-%br
+		
+= form_tag(texture_index_path, class: 'full-width', method: :get) do
+	%table.full-width
+		%tr
+			%td.search-box(colspan="2")
+				= text_field_tag :username, params[:username], placeholder: 'Username'
+				= submit_tag("Find profile")
+%hr
 - if @profile
-	%table
+	%h2 Results
+	%table.full-width
 		%tr
 			%td(colspan="2")
 				Username:
@@ -23,12 +28,13 @@
 				UUID:
 				= @profile.uuid
 		%tr
-			%td(colspan="5")
-				This user has
-				= @profile.textures.active.count
-				out of
-				= @profile.textures.count
-				textures currently active.
+			%td.center(colspan="5")
+				%i
+					This user has
+					= @profile.textures.active.count
+					out of
+					= @profile.textures.count
+					textures currently active.
 	%h2 Active Textures
 	%ul.texture-grid
 		- @profile.textures.active.order(:updated_at, :created_at).reverse_order.each do|texture|
@@ -47,20 +53,12 @@
 					%b
 						= texture.model
 						= texture.type
-					%br
-					%br
-					= form_tag(texture_path(texture), method: :patch) do |f|
-						= hidden_field_tag :hidden, 0
-						= submit_tag("Use this texture")
-- else
-	404
-	
-= form_tag(texture_index_path, method: :get) do |f|
-	%table
-		%tr
-			%td(colspan="2") Profile Search
-		%tr
-			%td Username:
-			%td= text_field_tag :username
-		%tr
-			%td(colspan="2")= submit_tag("Search")
+					- if user_signed_in? && current_user.id == @profile.id
+						%br
+						%br
+						= form_tag(texture_path(texture), method: :patch) do |f|
+							= hidden_field_tag :hidden, 0
+							= submit_tag("Use this texture")
+%br
+.center
+	%a{href: root_path} Back to home

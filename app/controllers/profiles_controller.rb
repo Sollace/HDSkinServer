@@ -1,5 +1,6 @@
 class ProfilesController < ApplicationController
   skip_before_action :verify_authenticity_token, :only => [:gateway]
+  before_action :verify_access_token, :only => [:gateway]
   
   def show
     if @profile = Profile.lookup(params)
@@ -24,6 +25,7 @@ class ProfilesController < ApplicationController
     end
   end
   
+  private
   def create
     if !params[:uuid]
       return head :unauthorized

@@ -12,13 +12,18 @@ Rails.application.routes.draw do
   # are retrieved as json
   get 'profile/:uuid' => 'profiles#show'
   
-  # Extra stuff
+  # Extra stuff - Skin selectors and profiles
   #
   # Previous textures are stored and kept up to 30 days.
   # You can get them out using this endpoint.
   resources :texture, only: [:index, :update]
   
-  # Skins can be uploaded via either post of put
+  #
+  # Extra stuff - Authentication
+  #
+  resource :session, only: [:new, :create, :destroy]
+  
+  # Skins can be uploaded via either post or put
   scope controller: :profiles, action: :gateway do
     post '/'
     put '/'

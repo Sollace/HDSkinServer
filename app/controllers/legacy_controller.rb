@@ -1,6 +1,6 @@
 #
 # Controller to handle legacy skin server requests.
-# We can't trust the client to follow redirects so were look up and
+# We can't trust the client to follow redirects so we look up and
 # serve the correct files ourselves.
 #
 class LegacyController < ApplicationController

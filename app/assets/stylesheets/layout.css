@@ -1,0 +1,39 @@
+
+html, body {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  padding: 20px;
+}
+
+body > section {
+  max-width: 1000px;
+  display: inline-block;
+}
+
+.full-width {
+  width: 100%;
+  clear: both;
+}
+
+.center {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+.fleft {
+  float: left;
+  margin-right: 10px;
+}
+
+.right {
+  text-align: right;
+}
+
+form {
+  display: inline-block;
+}

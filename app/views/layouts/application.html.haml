@@ -11,4 +11,21 @@
 		= csrf_meta_tags
 		= stylesheet_link_tag "application"
 		= javascript_include_tag "application"
-	%body= yield
+	%body.center
+		- flash.each do |key,value|
+			%div
+				= value
+				%hr
+		%section.left
+			.right
+				- if user_signed_in?
+					%a{href: texture_path(username: current_user.username)}
+						%b= current_user.username
+					= form_tag(session_path, method: :delete) do
+						= submit_tag 'Log Out'
+				- else
+					%a{href: new_session_path}
+						= button_tag 'Log In'
+				%a.fleft{href: root_path} Home
+				%a.fleft{href: texture_index_path} Profiles
+			= yield

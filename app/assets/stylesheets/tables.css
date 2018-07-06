@@ -2,7 +2,6 @@
 table {
   border-collapse: collapse;
   border: solid 1px;
-  width: 100%;
 }
  
 td {
@@ -13,4 +12,29 @@ td {
  
 tr.active td {
   background: #efe;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="password"],
+textarea {
+  border: solid 1px;
+  
+  padding: 5px 4px;
+}
+
+table input[type="text"],
+table input[type="search"],
+table input[type="password"],
+table textarea {
+  width: calc(100% - 10px);
+}
+
+button, input[type="reset"], input[type="button"], input[type="submit"] {
+  padding: 4px 20px;
+}
+
+.search-box {
+  display: flex;
+  
 }

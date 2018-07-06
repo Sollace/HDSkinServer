@@ -46,7 +46,8 @@ class Texture < ApplicationRecord
     {
       url: url,
       metadata: {
-        model: model
+        model: model,
+        active: !hidden
       }
     }
   end
