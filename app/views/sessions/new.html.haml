@@ -3,9 +3,11 @@
 
 %p
 	Note that login through the webportal makes use of Yggdrasil authentication via mojang. Using this may leave you signed out of other related services.
+%p
+	Additional Note: Mojang's servers are severely rate limited. If you can't sign in now, try again in a few minutes.
 
 .center
-	= form_tag(new_session_path, method: :post) do |f|
+	= form_tag(session_path, method: :post) do |f|
 		= hidden_field_tag :from, params[:from]
 		%table
 			%tr

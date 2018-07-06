@@ -19,7 +19,7 @@
 		%section.left
 			.right
 				- if user_signed_in?
-					%a{href: texture_path(username: current_user.username)}
+					%a{href: texture_index_path(username: current_user.username)}
 						%b= current_user.username
 					= form_tag(session_path, method: :delete) do
 						= submit_tag 'Log Out'

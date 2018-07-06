@@ -15,9 +15,14 @@ module Authenticated
         params.require(:username), 
         params.require(:password)) do |token, profile|
         
-      session[:user_id] = Profile.where(uuid: profile.id).pluck(:id).first
-      Profile.where(uuid: profile.id).update_all(username: profile.name)
+      user = Profile.create_with(username: profile['name']).find_or_create_by(uuid: profile['id']) do |user|
+        user.username = profile['name']
+      end
+      
+      session[:user_id] = user.id
     end
+    
+    user_signed_in?
   end
   
   def verify_access_token

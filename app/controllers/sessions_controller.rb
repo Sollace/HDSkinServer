@@ -13,9 +13,12 @@ class SessionsController < ApplicationController
       return redirect_to root_path
     end
     
-    authenticate_user
-    
-    redirect_to params[:from]
+    if authenticate_user
+      redirect_to params[:from]
+    else
+      flash[:notice] = "Authentication failed"
+      redirect_to controller: :sessions, action: :new, from: params[:from]
+    end
   end
   
   def destroy
