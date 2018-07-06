@@ -1,12 +1,12 @@
 # Ignore sample data
 
-/public/store/capes
+/public/store/capes/*
 !/public/store/capes/.keep
 
-/public/store/elytras
+/public/store/elytras/*
 !/public/store/elytras/.keep
 
-/public/store/skins
+/public/store/skins/*
 !/public/store/skins/.keep
 
 # Ignore bundler config.
