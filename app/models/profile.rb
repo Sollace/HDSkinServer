@@ -17,7 +17,7 @@ class Profile < ApplicationRecord
     return Profile.where(uuid: params[:uuid]).first
   end
   
-  def json
+  def json(host)
     response = {
       timestamp: Time.zone.now.to_i,
       profileId: uuid,
@@ -27,7 +27,7 @@ class Profile < ApplicationRecord
     }
     
     textures.active.each do |tex|
-      response[:textures][tex.type.to_sym] << tex.json
+      response[:textures][tex.type.upcase] = tex.json(host)
     end
     
     response

@@ -11,7 +11,9 @@ class TextureController < ApplicationController
       if @profile
         return render json: {
           success: true,
-          data: @profile.textures.order(:updated_at).reverse_order.map(&:json)
+          data: @profile.textures.order(:updated_at).reverse_order.map do |texture|
+            texture.json(root_url)
+          end
         }
       end
       

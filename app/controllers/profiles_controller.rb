@@ -6,7 +6,7 @@ class ProfilesController < ApplicationController
     if @profile = Profile.lookup(params)
       return render json: {
         success: true,
-        data: @profile.json
+        data: @profile.json(root_url)
       }
     end
     

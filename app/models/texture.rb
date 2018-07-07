@@ -42,18 +42,18 @@ class Texture < ApplicationRecord
     TYPES.include?(model)
   end
   
-  def json
+  def json(host)
     {
-      url: url,
+      url:  URI::join(host, url),
       metadata: {
-        model: model,
+        model: model.upcase,
         active: !hidden
       }
     }
   end
   
   def url
-    "#{root_path}store/#{type.pluralize}/#{checksum}.png"
+    "/store/#{type.pluralize}/#{checksum}.png"
   end
   
   def asset_path
