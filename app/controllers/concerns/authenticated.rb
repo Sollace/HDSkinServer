@@ -44,7 +44,7 @@ module Authenticated
       return false
     end
     
-    true
+    !current_user.nil?
   end
   
   def clear_session
@@ -53,8 +53,10 @@ module Authenticated
   end
   
   def current_user
-    if @current_user.nil? && user_signed_in?
-      @current_user = Profile.where(id: session[:user_id]).first
+    if @current_user.nil? && session.key?(:user_id)
+      if !(@current_user = Profile.where(id: session[:user_id]).first)
+        clear_session
+      end
     end
     
     @current_user
