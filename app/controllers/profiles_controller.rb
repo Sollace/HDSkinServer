@@ -4,15 +4,10 @@ class ProfilesController < ApplicationController
   
   def show
     if @profile = Profile.lookup(params)
-      return render json: {
-        success: true,
-        data: @profile.json(root_url)
-      }
+      return render @profile.json(root_url)
     end
     
-    render json: {
-      success: false
-    }
+    head :not_found
   end
   
   def gateway

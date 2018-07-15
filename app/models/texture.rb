@@ -46,7 +46,8 @@ class Texture < ApplicationRecord
     {
       url:  URI::join(host, url),
       metadata: {
-        model: model.upcase,
+        type: type.upcase,
+        model: model.downcase,
         active: !hidden
       }
     }

@@ -17,14 +17,18 @@ class Profile < ApplicationRecord
     return Profile.where(uuid: params[:uuid]).first
   end
   
-  def json(host)
-    response = {
+  def shallow_json
+    {
       timestamp: Time.zone.now.to_i,
       profileId: uuid,
       profileName: username,
-      isPublic: true,
-      textures: {}
+      isPublic: true
     }
+  end
+  
+  def json(host)
+    response = shallow_json
+    response[:textures] = {}
     
     textures.active.each do |tex|
       response[:textures][tex.type.upcase] = tex.json(host)
